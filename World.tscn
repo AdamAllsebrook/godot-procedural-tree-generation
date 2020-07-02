@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Tree2D/Resources/lsys_tree1.tres" type="Resource" id=1]
+[ext_resource path="res://Tree2D/Tree2D.tscn" type="PackedScene" id=3]
+
+[node name="World" type="Node2D"]
+
+[node name="Tree2D" parent="." instance=ExtResource( 3 )]
+position = Vector2( 500, 500 )
+scale = Vector2( 2, 2 )
+l_system = ExtResource( 1 )
+length_factor = 0.5
+max_rotation = 35.0
