@@ -3,6 +3,7 @@ extends Resource
 # prefix with AA so it appears at the top of the list of resources
 class_name AALSystem
 
+# the starting string
 export(String) var axiom
 # each rule must be an AARule
 export(Array, Resource) var rules
