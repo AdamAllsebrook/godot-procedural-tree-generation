@@ -1,8 +1,9 @@
 extends Node2D
 
-# Some L-Systems:
+# some L-systems:
 # http://paulbourke.net/fractals/lsys/
 
+# must be an AALSystem
 export(Resource) var l_system
 
 export(int) var start_length = 20

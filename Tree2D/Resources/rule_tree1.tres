@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource( 1 )
-pre = "X"
-succ = "F+[[X]-X]-F[-FX]+X"
+predecessor = "X"
+successor = "F-[[X]+X]+F[+FX]-X"
