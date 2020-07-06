@@ -10,19 +10,34 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Resource",
-"class": "AALSystem",
+"class": "AACustomResource",
 "language": "GDScript",
-"path": "res://LSystem/LSystem.gd"
+"path": "res://LSystem/CustomResource.gd"
 }, {
-"base": "Resource",
-"class": "AARule",
+"base": "Object",
+"class": "Branch",
 "language": "GDScript",
-"path": "res://LSystem/Rule.gd"
+"path": "res://Tree/Branch.gd"
 }, {
 "base": "Object",
 "class": "Branch2D",
 "language": "GDScript",
 "path": "res://Tree2D/Branch2D.gd"
+}, {
+"base": "AACustomResource",
+"class": "LSystem",
+"language": "GDScript",
+"path": "res://LSystem/LSystem.gd"
+}, {
+"base": "AACustomResource",
+"class": "Rule",
+"language": "GDScript",
+"path": "res://LSystem/Rule.gd"
+}, {
+"base": "Object",
+"class": "Turtle",
+"language": "GDScript",
+"path": "res://Tree/Turtle.gd"
 }, {
 "base": "Object",
 "class": "Turtle2D",
@@ -30,22 +45,31 @@ _global_script_classes=[ {
 "path": "res://Tree2D/Turtle2D.gd"
 }, {
 "base": "Object",
+"class": "TurtleTransform",
+"language": "GDScript",
+"path": "res://Tree/TurtleTransform.gd"
+}, {
+"base": "Object",
 "class": "TurtleTransform2D",
 "language": "GDScript",
 "path": "res://Tree2D/TurtleTransform2D.gd"
 } ]
 _global_script_class_icons={
-"AALSystem": "",
-"AARule": "",
+"AACustomResource": "",
+"Branch": "",
 "Branch2D": "",
+"LSystem": "",
+"Rule": "",
+"Turtle": "",
 "Turtle2D": "",
+"TurtleTransform": "",
 "TurtleTransform2D": ""
 }
 
 [application]
 
-config/name="L-System"
-run/main_scene="res://World.tscn"
+config/name="Procedural Generation of Trees using L-Systems"
+run/main_scene="res://Demos/3DDemo1.tscn"
 config/icon="res://icon.png"
 
 [rendering]

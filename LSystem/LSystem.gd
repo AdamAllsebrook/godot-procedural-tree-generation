@@ -1,19 +1,18 @@
 tool
-extends Resource
-# prefix with AA so it appears at the top of the list of resources
-class_name AALSystem
+extends AACustomResource
+class_name LSystem
 
 # the starting string
 export(String) var axiom
 # each rule must be an AARule
 export(Array, Resource) var rules
-export(int, 1, 7) var num_generations = 5
+export(int, 1, 20) var num_generations = 5
 
 func generate() -> String:
 	assert(len(axiom) > 0, "axiom required")
 	assert(len(rules) > 0, "at least one rule required")
 	for rule in rules:
-		assert(rule is AARule, "rules must be resource of type AARule")
+		assert(rule is Rule, "rules must be resource of type Rule")
 
 	var sentence: String = axiom
 

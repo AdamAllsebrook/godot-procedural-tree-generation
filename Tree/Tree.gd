@@ -1,16 +1,22 @@
-extends Node2D
+tool
+extends Spatial
 
-# some L-systems:
-# http://paulbourke.net/fractals/lsys/
+# https://github.com/abiusx/L3D
 
 # alphabet:
+# +: turn right
+# -: turn left
+# &: pitch down
+# ^: pitch up
+# <: roll left
+# >: roll right
+# |: turn 180 degrees // not implemented
 # F: create branch and move forward
-# +: rotate right
-# -: rotate left
+# g: go forward // not implemented
 # [: push a new transformation onto the stack
 # ]: pop a transformation from the stack 
 
-# must be an LSystem
+# must be an AALSystem
 export(Resource) var l_system
 
 export(int) var start_length = 20
@@ -22,7 +28,13 @@ export(float, 0, 360) var max_rotation = 35
 
 export(Color) var colour = Color(1, 1, 1, 1)
 
+export(bool) var gen setget do_gen
+
 var branches: Array
+
+const X := Vector3.RIGHT
+const Y := Vector3.UP
+const Z := Vector3.BACK
 
 func _ready() -> void:
 	randomize()
@@ -31,8 +43,9 @@ func _ready() -> void:
 func generate() -> void:
 	assert(l_system is LSystem, "l_system must be a resource of type LSystem")
 	
-	var turtle: Turtle2D = Turtle2D.new()
+	var turtle: Turtle = Turtle.new()
 	var sentence: String = l_system.generate()
+	print(sentence)
 	
 	var length: float = start_length
 	branches = []
@@ -42,16 +55,28 @@ func generate() -> void:
 			'F':
 				branches.append(turtle.create_line(length))
 			'+':
-				turtle.rotate(rand_range(min_rotation, max_rotation))
+				turtle.rotate(X, rand_range(min_rotation, max_rotation))
 			'-':
-				turtle.rotate(-rand_range(min_rotation, max_rotation))
+				turtle.rotate(X, -rand_range(min_rotation, max_rotation))
+			'&':
+				turtle.rotate(Z, rand_range(min_rotation, max_rotation))
+			'^':
+				turtle.rotate(Z, -rand_range(min_rotation, max_rotation))
+			'<':
+				turtle.rotate(Y, rand_range(min_rotation, max_rotation))
+			'>':
+				turtle.rotate(Y, -rand_range(min_rotation, max_rotation))
 			'[':
 				turtle.push()
 				length *= length_factor
 			']':
 				turtle.pop()
 				length /= length_factor
-
-func _draw() -> void:
+	
+	for child in get_children():
+		child.free()
 	for branch in branches:
-		draw_line(branch.point1, branch.point2, colour, thickness)
+		add_child(branch.create_mesh())
+		
+func do_gen(_b):
+	generate()
