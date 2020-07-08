@@ -8,4 +8,4 @@
 script = ExtResource( 1 )
 axiom = "FA"
 rules = [ ExtResource( 3 ), ExtResource( 2 ) ]
-num_generations = 9
+num_generations = 7

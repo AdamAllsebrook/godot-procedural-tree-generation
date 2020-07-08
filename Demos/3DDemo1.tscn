@@ -8,6 +8,6 @@
 [node name="Tree" parent="." instance=ExtResource( 1 )]
 l_system = ExtResource( 2 )
 start_length = 10
-length_factor = 0.95
-min_rotation = 10.0
-max_rotation = 20.0
+length_factor = 1.0
+min_rotation = 13.0
+max_rotation = 17.0

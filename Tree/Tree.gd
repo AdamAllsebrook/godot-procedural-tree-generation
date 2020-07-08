@@ -45,7 +45,6 @@ func generate() -> void:
 	
 	var turtle: Turtle = Turtle.new()
 	var sentence: String = l_system.generate()
-	print(sentence)
 	
 	var length: float = start_length
 	branches = []
@@ -76,7 +75,8 @@ func generate() -> void:
 	for child in get_children():
 		child.free()
 	for branch in branches:
-		add_child(branch.create_mesh())
+		branch.create_mesh()
+		add_child(branch)
 		
 func do_gen(_b):
 	generate()
