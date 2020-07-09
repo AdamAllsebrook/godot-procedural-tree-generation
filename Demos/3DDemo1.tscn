@@ -9,5 +9,7 @@
 l_system = ExtResource( 2 )
 start_length = 10
 length_factor = 1.0
+thickness_factor = 0.8
 min_rotation = 13.0
 max_rotation = 17.0
+colour = Color( 0.647059, 0.443137, 0.443137, 1 )

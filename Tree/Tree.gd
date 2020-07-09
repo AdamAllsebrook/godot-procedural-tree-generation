@@ -21,7 +21,8 @@ export(Resource) var l_system
 
 export(int) var start_length = 20
 export(float) var length_factor = .5
-export(int, 1, 100) var thickness = 1
+export(int, 1, 100) var start_thickness = 1
+export(float) var thickness_factor = 1
 
 export(float, 0, 360) var min_rotation = 15
 export(float, 0, 360) var max_rotation = 35
@@ -47,12 +48,13 @@ func generate() -> void:
 	var sentence: String = l_system.generate()
 	
 	var length: float = start_length
+	var thickness: float = start_thickness
 	branches = []
 	
 	for character in sentence:
 		match character:
 			'F':
-				branches.append(turtle.create_line(length))
+				branches.append(turtle.create_line(length, thickness, colour))
 			'+':
 				turtle.rotate(X, rand_range(min_rotation, max_rotation))
 			'-':
@@ -68,9 +70,11 @@ func generate() -> void:
 			'[':
 				turtle.push()
 				length *= length_factor
+				thickness *= thickness_factor
 			']':
 				turtle.pop()
 				length /= length_factor
+				thickness /= thickness_factor
 	
 	for child in get_children():
 		child.free()
