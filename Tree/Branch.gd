@@ -39,7 +39,8 @@ func create_prism(num_sides: int, bottom: Array, translation: Vector3, height: f
 	var normals := PoolVector3Array()
 	var indices := PoolIntArray()
 	
-	var centre := translation + rot_basis * Vector3(0, height / 2, 0)
+	var centre_top := translation + rot_basis * Vector3(0, height, 0)
+	var centre_bottom := translation
 	
 	var top := []
 	
@@ -90,18 +91,24 @@ func create_prism(num_sides: int, bottom: Array, translation: Vector3, height: f
 		#var theta: float = 2 * PI / num_sides
 		
 		verts.append(bottom[i])
+		normals.append((centre_bottom - bottom[i]).normalized())
 		verts.append(bottom[(i+1) % num_sides])
+		normals.append((centre_bottom - bottom[(i+1) % num_sides]).normalized())
 		verts.append(top[i])
+		normals.append((centre_top - top[i]).normalized())
 		
 		verts.append(top[i])
+		normals.append((centre_top - top[i]).normalized())
 		verts.append(bottom[(i+1) % num_sides])
+		normals.append((centre_bottom - bottom[(i+1) % num_sides]).normalized())
 		verts.append(top[(i+1) % num_sides])
+		normals.append((centre_top - top[(i+1) % num_sides]).normalized())
 		
-		var centre_of_face: Vector3 = (bottom[i] + top[(i+1) % num_sides]) / 2
-		var normal: Vector3 = (centre - centre_of_face).normalized()
+#		var centre_of_face: Vector3 = (bottom[i] + top[(i+1) % num_sides]) / 2
+#		var normal: Vector3 = (centre - centre_of_face).normalized()
 		
 		for j in (6):
-			normals.append(normal)
+			#normals.append(normal)
 			uvs.append(Vector2())
 			indices.append(num_indices + j)
 		num_indices += 6

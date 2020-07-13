@@ -22,8 +22,6 @@ func _init() -> void:
 func add_to_mesh(verts_: PoolVector3Array, uvs_: PoolVector2Array, 
 		normals_: PoolVector3Array, indices_: PoolIntArray) -> void:
 	
-#	print(verts_)
-#	print()
 	verts.append_array(verts_)
 	uvs.append_array(uvs_)
 	normals.append_array(normals_)

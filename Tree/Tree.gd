@@ -79,9 +79,7 @@ func generate() -> void:
 	
 	for child in get_children():
 		child.free()
-#	for branch in branches:
-#		branch.create_mesh()
-#		add_child(branch)
+	
 	var tree: Root = turtle.get_tree()
 	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour)
 	add_child(mesh)
