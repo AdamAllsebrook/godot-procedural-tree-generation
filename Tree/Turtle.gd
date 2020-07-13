@@ -4,7 +4,11 @@ class_name Turtle
 
 var transform_stack := [TurtleTransform.new()]
 
-func create_line(length: float, thickness: float, colour: Color) -> Branch:
+var root: Root = Root.new()
+var current: Branch = root
+var branch_stack := [root]
+
+func create_line(length: float, thickness: float, colour: Color) -> void:
 	var transform: TurtleTransform = transform_stack[-1]
 	
 	var point1 := get_current_point()
@@ -12,7 +16,10 @@ func create_line(length: float, thickness: float, colour: Color) -> Branch:
 	var point2 := get_current_point()
 	var rotation: Basis = get_current_rotation()
 	
-	return Branch.new(point1, point2, rotation, thickness, colour)
+	var branch := Branch.new(point1, point2, rotation, thickness, colour)
+	current.add_child_branch(branch)
+	branch.set_parent_branch(current)
+	current = branch
 	
 func rotate(axis: Vector3, angle: float) -> void:
 	var transform: TurtleTransform = transform_stack[-1]
@@ -20,9 +27,11 @@ func rotate(axis: Vector3, angle: float) -> void:
 	
 func push() -> void:
 	transform_stack.push_back(TurtleTransform.new())
+	branch_stack.push_back(current)
 	
 func pop() -> void:
 	transform_stack.pop_back()
+	current = branch_stack.pop_back()
 	
 func get_current_rotation() -> Basis:
 	var rotation := Basis()
@@ -40,3 +49,6 @@ func get_current_point() -> Vector3:
 		rotation *= transform.rotation
 	
 	return point
+	
+func get_tree() -> Root:
+	return root

@@ -29,6 +29,8 @@ export(float, 0, 360) var max_rotation = 35
 
 export(Color) var colour = Color(1, 1, 1, 1)
 
+export(int, 3, 20) var branch_num_sides = 5
+
 export(bool) var gen setget do_gen
 
 var branches: Array
@@ -49,12 +51,11 @@ func generate() -> void:
 	
 	var length: float = start_length
 	var thickness: float = start_thickness
-	branches = []
 	
 	for character in sentence:
 		match character:
 			'F':
-				branches.append(turtle.create_line(length, thickness, colour))
+				turtle.create_line(length, thickness, colour)
 			'+':
 				turtle.rotate(X, rand_range(min_rotation, max_rotation))
 			'-':
@@ -78,9 +79,12 @@ func generate() -> void:
 	
 	for child in get_children():
 		child.free()
-	for branch in branches:
-		branch.create_mesh()
-		add_child(branch)
+#	for branch in branches:
+#		branch.create_mesh()
+#		add_child(branch)
+	var tree: Root = turtle.get_tree()
+	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour)
+	add_child(mesh)
 		
 func do_gen(_b):
 	generate()
