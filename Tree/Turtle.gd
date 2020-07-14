@@ -8,11 +8,11 @@ var root: Root = Root.new()
 var current: Branch = root
 var branch_stack := [root]
 
-func create_line(length: float, thickness: float, colour: Color) -> void:
+func create_line(length: float, variance: float, thickness: float, colour: Color) -> void:
 	var transform: TurtleTransform = transform_stack[-1]
 	
 	var point1 := get_current_point()
-	transform.move_forward(length)
+	transform.move_forward(length * rand_range(1 - variance, 1 + variance))
 	var point2 := get_current_point()
 	var rotation: Basis = get_current_rotation()
 	

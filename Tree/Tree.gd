@@ -20,7 +20,8 @@ extends Spatial
 export(Resource) var l_system
 
 export(int) var start_length = 20
-export(float) var length_factor = .5
+export(float) var length_factor = .9
+export(float) var length_variance = .1
 export(int, 1, 100) var start_thickness = 1
 export(float) var thickness_factor = 1
 
@@ -55,7 +56,7 @@ func generate() -> void:
 	for character in sentence:
 		match character:
 			'F':
-				turtle.create_line(length, thickness, colour)
+				turtle.create_line(length, length_variance, thickness, colour)
 			'+':
 				turtle.rotate(X, rand_range(min_rotation, max_rotation))
 			'-':
