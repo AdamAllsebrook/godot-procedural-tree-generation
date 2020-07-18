@@ -1,5 +1,5 @@
 tool
-extends Object
+extends Reference
 class_name Turtle
 
 var transform_stack := [TurtleTransform.new()]

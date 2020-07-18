@@ -1,5 +1,5 @@
 tool
-extends Object
+extends Reference
 class_name TurtleTransform
 
 var position := Vector3()

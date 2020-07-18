@@ -5,6 +5,7 @@
 [ext_resource path="res://Tree/Resources/leaf_tree1.tres" type="Resource" id=3]
 
 [node name="3DDemo1" type="Spatial"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 
 [node name="Tree" parent="." instance=ExtResource( 1 )]
 l_system = ExtResource( 2 )
@@ -15,3 +16,6 @@ min_rotation = 13.0
 max_rotation = 17.0
 colour = Color( 0.647059, 0.443137, 0.443137, 1 )
 leaf_settings = ExtResource( 3 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 48.9054, 94.2462 )

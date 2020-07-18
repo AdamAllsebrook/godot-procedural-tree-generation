@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://LSystem/CustomResource.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "Branch",
 "language": "GDScript",
 "path": "res://Tree/Branch.gd"
@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Tree/LeafSettings.gd"
 }, {
+"base": "Reference",
+"class": "MeshAttributes",
+"language": "GDScript",
+"path": "res://Tree/MeshAttributes.gd"
+}, {
 "base": "Branch",
 "class": "Root",
 "language": "GDScript",
@@ -49,7 +54,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Tree/TreeMesh.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "Turtle",
 "language": "GDScript",
 "path": "res://Tree/Turtle.gd"
@@ -59,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Tree2D/Turtle2D.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "TurtleTransform",
 "language": "GDScript",
 "path": "res://Tree/TurtleTransform.gd"
@@ -75,6 +80,7 @@ _global_script_class_icons={
 "Branch2D": "",
 "LSystem": "",
 "LeafSettings": "",
+"MeshAttributes": "",
 "Root": "",
 "Rule": "",
 "TreeMesh": "",

@@ -82,7 +82,7 @@ func generate() -> void:
 				thickness /= thickness_factor
 	
 	for child in get_children():
-		child.free()
+		child.queue_free()
 	
 	var tree: Root = turtle.get_tree()
 	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour, leaf_settings)

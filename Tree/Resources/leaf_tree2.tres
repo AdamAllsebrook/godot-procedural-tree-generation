@@ -7,4 +7,4 @@ script = ExtResource( 1 )
 frequency = 0.3
 width = 1.5
 height = 1.5
-min_depth = 7
+min_depth = 11
