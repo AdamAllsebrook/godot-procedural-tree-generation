@@ -26,20 +26,32 @@ func set_parent_branch(p: Branch) -> void:
 func get_parent_branch() -> Branch:
 	return parent
 
-func add_to_mesh(mi: TreeMesh, bottom: Array) -> void:
-	var attrs: Dictionary = create_prism(bottom.size(), bottom, point_a, point_a.distance_to(point_b), thickness)
-	mi.add_to_mesh(attrs.verts, attrs.uvs, attrs.normals, attrs.indices)
+func add_to_mesh(mi: TreeMesh, bottom: Array, depth: int, leaf_settings: LeafSettings) -> void:
+	var attrs: Dictionary = create_prism(bottom.size(), bottom, point_a, rot_basis, 
+			point_a.distance_to(point_b), thickness)
+	mi.add_branch(attrs.verts, attrs.uvs, attrs.normals, attrs.indices)
+	
+	if depth >= leaf_settings.min_depth:
+		var leaf_attrs: Dictionary = create_leaves_across_branch(point_a, rot_basis, 
+				point_a.distance_to(point_b), thickness, leaf_settings)
+		mi.add_leaf(leaf_attrs.verts, leaf_attrs.uvs, leaf_attrs.normals, leaf_attrs.indices)
+	
+	if children.size() == 0:
+		var leaf_attrs: Dictionary = create_leaf(point_b, rot_basis, leaf_settings)
+		mi.add_leaf(leaf_attrs.verts, leaf_attrs.uvs, leaf_attrs.normals, leaf_attrs.indices)
 	
 	for child in children:
-		child.add_to_mesh(mi, attrs.top)
+		child.add_to_mesh(mi, attrs.top, depth + 1, leaf_settings)
 
-func create_prism(num_sides: int, bottom: Array, translation: Vector3, height: float, width: float) -> Dictionary:
+static func create_prism(num_sides: int, bottom: Array, translation: Vector3, 
+		rotation: Basis, height: float, width: float) -> Dictionary:
+	
 	var verts := PoolVector3Array()
 	var uvs := PoolVector2Array()
 	var normals := PoolVector3Array()
 	var indices := PoolIntArray()
 	
-	var centre_top := translation + rot_basis * Vector3(0, height, 0)
+	var centre_top := translation + rotation * Vector3(0, height, 0)
 	var centre_bottom := translation
 	
 	var top := []
@@ -47,7 +59,7 @@ func create_prism(num_sides: int, bottom: Array, translation: Vector3, height: f
 	# create points for top side
 	for i in (num_sides):
 		var v: Vector3 = get_prism_point(float(i) / num_sides, height, width)
-		v = rot_basis * v
+		v = rotation * v
 		v += translation
 		top.append(v)
 		
@@ -118,8 +130,81 @@ func create_prism(num_sides: int, bottom: Array, translation: Vector3, height: f
 		uvs = uvs,
 		normals = normals,
 		indices = indices,
-		top = top
+		top = top,
 	}
 	
-func get_prism_point(angle_percent: float, height: float, width: float) -> Vector3:
+static func get_prism_point(angle_percent: float, height: float, width: float) -> Vector3:
 	return Vector3(sin(2 * PI * angle_percent) * width, height, cos(2 * PI * angle_percent) * width)
+
+static func create_leaves_across_branch(translation: Vector3, rotation: Basis, 
+		branch_height: float, branch_width: float, settings: LeafSettings) -> Dictionary:
+	var verts := PoolVector3Array()
+	var uvs := PoolVector2Array()
+	var normals := PoolVector3Array()
+	var indices := PoolIntArray()
+	
+	var num_verts: int = 0
+	
+	for i in range(0, branch_height, 1 / settings.frequency):
+		for j in [-1, 1]:
+			var offset := Vector3((branch_width + settings.width / 2) * j, i, 0)
+			var leaf_attrs: Dictionary = create_leaf(translation + rotation * offset, rotation, settings)
+			verts.append_array(leaf_attrs.verts)
+			uvs.append_array(leaf_attrs.uvs)
+			normals.append_array(leaf_attrs.normals)
+			for index in leaf_attrs.indices:
+				indices.append(index + num_verts)
+			num_verts += leaf_attrs.verts.size()
+	
+	return {
+		verts = verts,
+		uvs = uvs,
+		normals = normals,
+		indices = indices,
+	}
+
+static func create_leaf(translation: Vector3, rotation: Basis, settings: LeafSettings) -> Dictionary:
+	
+	var verts := PoolVector3Array()
+	var uvs := PoolVector2Array()
+	var normals := PoolVector3Array()
+	var indices := PoolIntArray()
+
+	verts.append(translation + rotation * Vector3(-settings.width / 2, 0, 0))
+	uvs.append(Vector2(0, 0))
+	verts.append(translation + rotation * Vector3(settings.width / 2, 0, 0))
+	uvs.append(Vector2(1, 0))
+	verts.append(translation + rotation * Vector3(-settings.width / 2, settings.height, 0))
+	uvs.append(Vector2(0, 1))
+	verts.append(translation + rotation * Vector3(settings.width / 2, settings.height, 0))
+	uvs.append(Vector2(1, 1))
+	
+	var v1: Vector3 = verts[0] - verts[1]
+	var v2: Vector3 = verts[0] - verts[2]
+	var normal: Vector3 = (v2.cross(v1)).normalized()
+	
+	for i in (4):
+		normals.append(normal)
+	indices.append_array(PoolIntArray([0, 1, 2, 2, 1, 3]))
+	
+	return {
+		verts = verts,
+		uvs = uvs,
+		normals = normals,
+		indices = indices,
+	}
+	
+static func get_leaf_points(distance_up_branch: float, translation: Vector3, rotation: Basis,
+		branch_radius: float, leaf_width: float, leaf_height: float) -> PoolVector3Array:
+	
+	var origin := translation + rotation * Vector3(0, distance_up_branch, 0)
+	
+	var points := PoolVector3Array()
+	points.append(Vector3(-leaf_height, 0, 0))
+	points.append(Vector3(0, -leaf_width / 2, 0))
+	points.append(Vector3(0, leaf_width / 2, 0))
+	
+	for i in (points.size()):
+		points[i] += origin
+	
+	return points

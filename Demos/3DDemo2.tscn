@@ -1,17 +1,17 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Tree/Tree.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Tree/Resources/lsys_tree1.tres" type="Resource" id=2]
-[ext_resource path="res://Tree/Resources/leaf_tree1.tres" type="Resource" id=3]
+[ext_resource path="res://Tree/Resources/lsys_tree2.tres" type="Resource" id=2]
+[ext_resource path="res://Tree/Resources/leaf_tree2.tres" type="Resource" id=3]
 
-[node name="3DDemo1" type="Spatial"]
+[node name="3DDemo2" type="Spatial"]
 
 [node name="Tree" parent="." instance=ExtResource( 1 )]
 l_system = ExtResource( 2 )
-start_length = 10
+start_length = 5
 length_variance = 0.25
 thickness_factor = 0.7
-min_rotation = 13.0
-max_rotation = 17.0
+min_rotation = 18.0
+max_rotation = 22.0
 colour = Color( 0.647059, 0.443137, 0.443137, 1 )
 leaf_settings = ExtResource( 3 )

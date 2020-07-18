@@ -8,15 +8,15 @@ extends Spatial
 # -: turn left
 # &: pitch down
 # ^: pitch up
-# <: roll left
-# >: roll right
+# <: roll left /
+# >: roll right \
 # |: turn 180 degrees // not implemented
 # F: create branch and move forward
 # g: go forward // not implemented
 # [: push a new transformation onto the stack
 # ]: pop a transformation from the stack 
 
-# must be an AALSystem
+# must be an LSystem
 export(Resource) var l_system
 
 export(int) var start_length = 20
@@ -31,6 +31,9 @@ export(float, 0, 360) var max_rotation = 35
 export(Color) var colour = Color(1, 1, 1, 1)
 
 export(int, 3, 20) var branch_num_sides = 5
+
+# must be a LeafSettings
+export(Resource) var leaf_settings
 
 export(bool) var gen setget do_gen
 
@@ -82,7 +85,7 @@ func generate() -> void:
 		child.free()
 	
 	var tree: Root = turtle.get_tree()
-	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour)
+	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour, leaf_settings)
 	add_child(mesh)
 		
 func do_gen(_b):
