@@ -22,16 +22,18 @@ export(float, 0, 360) var max_rotation = 35
 
 export(Color) var colour = Color(1, 1, 1, 1)
 
+export(int) var random_seed = 0
+
 var branches: Array
 
 
 func _ready() -> void:
-	randomize()
 	generate()
 
 
 func generate() -> void:
 	assert(l_system is LSystem, "l_system must be a resource of type LSystem")
+	seed(random_seed)
 	
 	var turtle: Turtle2D = Turtle2D.new()
 	var sentence: String = l_system.generate()
@@ -54,7 +56,7 @@ func generate() -> void:
 				turtle.pop()
 				length /= length_factor
 
-				
+
 func _draw() -> void:
 	for branch in branches:
 		draw_line(branch.point1, branch.point2, colour, thickness)

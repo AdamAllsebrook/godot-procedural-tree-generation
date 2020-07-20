@@ -37,19 +37,21 @@ export(int, 3, 20) var branch_num_sides = 5
 # must be a LeafSettings
 export(Resource) var leaf_settings
 
+export(int) var random_seed = 0
+
 export(bool) var gen setget do_gen
 
 var branches: Array
 
 
 func _ready() -> void:
-	randomize()
 	generate()
 
 
 func generate() -> void:
 	assert(l_system is LSystem, 'l_system must be a resource of type LSystem')
 	assert(leaf_settings is LeafSettings, 'leaf settings must be a resource of type LeafSettings')
+	seed(random_seed)
 	
 	var turtle: Turtle = Turtle.new()
 	var sentence: String = l_system.generate()

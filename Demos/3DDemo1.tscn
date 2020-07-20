@@ -19,6 +19,7 @@ max_rotation = 17.0
 colour = Color( 0.647059, 0.443137, 0.443137, 1 )
 branch_num_sides = 5
 leaf_settings = ExtResource( 3 )
+random_seed = 0
 gen = false
 
 [node name="Camera" type="Camera" parent="."]
