@@ -1,7 +1,9 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://LSystem/LSystem.gd" type="Script" id=1]
-[ext_resource path="res://Tree2D/Resources/rule_tree1.tres" type="Resource" id=2]
+[ext_resource path="res://Demos/2D/Resources/Tree1/rule_tree1.tres" type="Resource" id=2]
+
+
 
 [resource]
 script = ExtResource( 1 )

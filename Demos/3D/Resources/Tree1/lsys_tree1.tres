@@ -1,8 +1,11 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://LSystem/LSystem.gd" type="Script" id=1]
-[ext_resource path="res://Tree/Resources/rule_tree1_2.tres" type="Resource" id=2]
-[ext_resource path="res://Tree/Resources/rule_tree1_1.tres" type="Resource" id=3]
+[ext_resource path="res://Demos/3D/Resources/Tree1/rule_tree1_2.tres" type="Resource" id=2]
+[ext_resource path="res://Demos/3D/Resources/Tree1/rule_tree1_1.tres" type="Resource" id=3]
+
+
+
 
 [resource]
 script = ExtResource( 1 )

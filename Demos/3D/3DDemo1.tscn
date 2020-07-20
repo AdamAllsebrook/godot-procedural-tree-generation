@@ -1,14 +1,14 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Tree/Tree.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Tree/Resources/lsys_tree1.tres" type="Resource" id=2]
-[ext_resource path="res://Tree/Resources/leaf_tree1.tres" type="Resource" id=3]
+[ext_resource path="res://Demos/3D/Resources/Tree1/leaf_tree1.tres" type="Resource" id=2]
+[ext_resource path="res://Demos/3D/Resources/Tree1/lsys_tree1.tres" type="Resource" id=3]
 
 [node name="3DDemo1" type="Spatial"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 
 [node name="Tree" parent="." instance=ExtResource( 1 )]
-l_system = ExtResource( 2 )
+l_system = ExtResource( 3 )
 start_length = 10
 length_factor = 0.9
 length_variance = 0.25
@@ -18,7 +18,7 @@ min_rotation = 13.0
 max_rotation = 17.0
 colour = Color( 0.647059, 0.443137, 0.443137, 1 )
 branch_num_sides = 5
-leaf_settings = ExtResource( 3 )
+leaf_settings = ExtResource( 2 )
 random_seed = 0
 gen = false
 
