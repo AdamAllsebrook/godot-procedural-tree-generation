@@ -27,27 +27,44 @@ func get_parent_branch() -> Branch:
 	return parent
 
 func add_to_mesh(mi: TreeMesh, bottom: Array, depth: int, leaf_settings: LeafSettings) -> void:
-	var attrs: MeshAttributes = create_prism(bottom.size(), bottom, point_a, rot_basis, 
+	# create points for the top of the branch
+	var top: Array = create_top_points(bottom.size(), point_a, rot_basis, 
 			point_a.distance_to(point_b), thickness)
+	
+	# create branch
+	var attrs: MeshAttributes = create_prism(bottom.size(), bottom, top, point_a, 
+			rot_basis, point_a.distance_to(point_b), thickness)
 	mi.add_branch(attrs)
-#
+
+	# create leaves along branch
 	if depth >= leaf_settings.min_depth:
 		var leaf_attrs: MeshAttributes = create_leaves_across_branch(point_a, rot_basis, 
 				point_a.distance_to(point_b), thickness, leaf_settings)
 		mi.add_leaf(leaf_attrs)
-		#leaf_attrs = null
 
+	# add leaf to end
 	if children.size() == 0:
 		var leaf_attrs: MeshAttributes = create_leaf(point_b, rot_basis, leaf_settings)
 		mi.add_leaf(leaf_attrs)
-		#leaf_attrs = null
 	
+	# create child branches
 	for child in children:
 		child.add_to_mesh(mi, attrs.data.top, depth + 1, leaf_settings)
 		
-	#attrs = null
+func create_top_points(num_points: int, translation: Vector3, rotation: Basis,
+		height: float, width: float) -> Array:
+			
+	var top := []
+	# create points for top side
+	for i in (num_points):
+		var v: Vector3 = get_prism_point(float(i) / num_points, height, width)
+		v = rotation * v
+		v += translation
+		top.append(v)
+	
+	return top
 
-static func create_prism(num_sides: int, bottom: Array, translation: Vector3, 
+static func create_prism(num_sides: int, bottom: Array, top: Array, translation: Vector3, 
 		rotation: Basis, height: float, width: float) -> MeshAttributes:
 	
 	var attrs := MeshAttributes.new()
@@ -55,15 +72,6 @@ static func create_prism(num_sides: int, bottom: Array, translation: Vector3,
 	var centre_top := translation + rotation * Vector3(0, height, 0)
 	var centre_bottom := translation
 	
-	var top := []
-	
-	# create points for top side
-	for i in (num_sides):
-		var v: Vector3 = get_prism_point(float(i) / num_sides, height, width)
-		v = rotation * v
-		v += translation
-		top.append(v)
-		
 	# align bottom and top arrays
 	# by rotating bottom array to the layout that has the least distance to the top array
 	var distance_sums := []
@@ -76,78 +84,48 @@ static func create_prism(num_sides: int, bottom: Array, translation: Vector3,
 	for i in (distance_sums.find(distance_sums.min())):
 		bottom.push_back(bottom.pop_front())
 	
-	# maybe create top/ bottom faces?
-	
-	# create top and bottom faces
-#	var num_indices: int = 0
-#	for h in [0, height]:
-#		for i in (num_sides - 2):
-#			# create the vertices for the prism, not rotated or translated
-#			verts.append(get_prism_point(0.0, h, width))
-#			verts.append(get_prism_point(float(i+1) / num_sides, h, width))
-#			verts.append(get_prism_point(float(i+2) / num_sides, h, width))
-#
-#			# calculate the normal for this triangle, including translation and rotation
-#			var normal: Vector3 = (centre - translation - rot_basis * Vector3(0, h, 0)).normalized()
-#
-#			# create normals, uvs, indices
-#			for j in (3):
-#				normals.append(normal)
-#				uvs.append(Vector2())
-#				indices.append(num_indices + j)
-#			num_indices += 3
-
 	# create sides
 	for i in (num_sides):
-#		#var theta: float = 2 * PI / num_sides
-#
-#		verts.append(bottom[i])
-#		normals.append((centre_bottom - bottom[i]).normalized())
-#		verts.append(bottom[(i+1) % num_sides])
-#		normals.append((centre_bottom - bottom[(i+1) % num_sides]).normalized())
-#		verts.append(top[i])
-#		normals.append((centre_top - top[i]).normalized())
-#
-#		verts.append(top[i])
-#		normals.append((centre_top - top[i]).normalized())
-#		verts.append(bottom[(i+1) % num_sides])
-#		normals.append((centre_bottom - bottom[(i+1) % num_sides]).normalized())
-#		verts.append(top[(i+1) % num_sides])
-#		normals.append((centre_top - top[(i+1) % num_sides]).normalized())
-#
-##		var centre_of_face: Vector3 = (bottom[i] + top[(i+1) % num_sides]) / 2
-##		var normal: Vector3 = (centre - centre_of_face).normalized()
-#
-#		for j in (6):
-#			#normals.append(normal)
-#			uvs.append(Vector2())
-#			indices.append(num_indices + j)
-#		num_indices += 6
-		
-		for j in (6):
-			attrs.append_uv(Vector2())
-			attrs.append_index(j)
+		attrs.append_indices(PoolIntArray([
+			i,
+			i + num_sides,
+			(i + 1) % num_sides,
 			
-		attrs.append_verts(PoolVector3Array([
-			bottom[i],
-			bottom[(i+1) % num_sides],
-			top[i],
-			
-			top[i],
-			bottom[(i+1) % num_sides],
-			top[(i+1) % num_sides],
+			(i + 1) % num_sides,
+			i + num_sides,
+			(i + 1) % num_sides + num_sides,
 		]))
-		
-		attrs.append_normals(PoolVector3Array([
-			(centre_bottom - bottom[i]).normalized(),
-			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
-			(centre_top - top[i]).normalized(),
 			
-			(centre_top - top[i]).normalized(),
-			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
-			(centre_top - top[(i+1) % num_sides]).normalized(),
-		]))
-
+#		attrs.append_verts(PoolVector3Array([
+#			bottom[i],
+#			bottom[(i+1) % num_sides],
+#			top[i],
+#
+#			top[i],
+#			bottom[(i+1) % num_sides],
+#			top[(i+1) % num_sides],
+#		]))
+#
+#		attrs.append_normals(PoolVector3Array([
+#			(centre_bottom - bottom[i]).normalized(),
+#			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
+#			(centre_top - top[i]).normalized(),
+#
+#			(centre_top - top[i]).normalized(),
+#			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
+#			(centre_top - top[(i+1) % num_sides]).normalized(),
+#		]))
+	
+	for i in (num_sides * 2):
+		attrs.append_uv(Vector2())
+	
+	attrs.append_verts(PoolVector3Array(top))
+	attrs.append_verts(PoolVector3Array(bottom))
+	for vertex in top:
+		attrs.append_normal((centre_top - vertex).normalized())
+	for vertex in bottom:
+		attrs.append_normal((centre_bottom - vertex).normalized())
+	
 	attrs.data.top = top
 	return attrs
 	
@@ -167,7 +145,6 @@ static func create_leaves_across_branch(translation: Vector3, rotation: Basis,
 	return attrs
 
 static func create_leaf(translation: Vector3, rotation: Basis, settings: LeafSettings) -> MeshAttributes:
-	
 	var attrs := MeshAttributes.new()
 	
 	attrs.append_verts(PoolVector3Array([

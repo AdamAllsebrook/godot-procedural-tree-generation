@@ -15,6 +15,6 @@ func generate_mesh(num_sides: int, thick: float, colour: Color, leaf_settings: L
 	for child in children:
 		child.add_to_mesh(mi, base_points, 1, leaf_settings)
 		
-	mi.commit_mesh(colour, leaf_settings.texture)
+	mi.commit_mesh(colour, leaf_settings.colour)
 	
 	return mi

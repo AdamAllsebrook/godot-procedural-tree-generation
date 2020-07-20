@@ -1,12 +1,11 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
 [ext_resource path="res://Tree/LeafSettings.gd" type="Script" id=1]
-[ext_resource path="res://Tree/Resources/leaf_texture.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-frequency = 0.2
+frequency = 0.1
 width = 2.0
 height = 2.0
 min_depth = 8
-texture = ExtResource( 2 )
+colour = Color( 0.521569, 1, 0, 1 )

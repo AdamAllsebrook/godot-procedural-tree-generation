@@ -8,3 +8,4 @@ frequency = 0.3
 width = 1.5
 height = 1.5
 min_depth = 11
+colour = Color( 1, 0.65098, 0.0470588, 1 )
