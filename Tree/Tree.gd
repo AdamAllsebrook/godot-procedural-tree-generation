@@ -10,11 +10,13 @@ extends Spatial
 # ^: pitch up
 # <: roll left /
 # >: roll right \
-# |: turn 180 degrees // not implemented
 # F: create branch and move forward
-# g: go forward // not implemented
 # [: push a new transformation onto the stack
 # ]: pop a transformation from the stack 
+
+const X := Vector3.RIGHT
+const Y := Vector3.UP
+const Z := Vector3.BACK
 
 # must be an LSystem
 export(Resource) var l_system
@@ -39,16 +41,15 @@ export(bool) var gen setget do_gen
 
 var branches: Array
 
-const X := Vector3.RIGHT
-const Y := Vector3.UP
-const Z := Vector3.BACK
 
 func _ready() -> void:
 	randomize()
 	generate()
 
+
 func generate() -> void:
-	assert(l_system is LSystem, "l_system must be a resource of type LSystem")
+	assert(l_system is LSystem, 'l_system must be a resource of type LSystem')
+	assert(leaf_settings is LeafSettings, 'leaf settings must be a resource of type LeafSettings')
 	
 	var turtle: Turtle = Turtle.new()
 	var sentence: String = l_system.generate()
@@ -59,7 +60,7 @@ func generate() -> void:
 	for character in sentence:
 		match character:
 			'F':
-				turtle.create_line(length, length_variance, thickness, colour)
+				turtle.create_branch(length, length_variance, thickness, colour)
 			'+':
 				turtle.rotate(X, rand_range(min_rotation, max_rotation))
 			'-':
@@ -81,12 +82,14 @@ func generate() -> void:
 				length /= length_factor
 				thickness /= thickness_factor
 	
-	for child in get_children():
-		child.queue_free()
+	if has_node('GeneratedTreeMesh'):
+		$GeneratedTreeMesh.free()
 	
 	var tree: Root = turtle.get_tree()
 	var mesh: MeshInstance = tree.generate_mesh(branch_num_sides, start_thickness, colour, leaf_settings)
+	mesh.set_name('GeneratedTreeMesh')
 	add_child(mesh)
-		
-func do_gen(_b):
+	
+
+func do_gen(_b: bool) -> void:
 	generate()

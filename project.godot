@@ -94,7 +94,6 @@ _global_script_class_icons={
 
 config/name="Procedural Generation of Trees using L-Systems"
 run/main_scene="res://Demos/3DDemo1.tscn"
-config/icon="res://icon.png"
 
 [rendering]
 

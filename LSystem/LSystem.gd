@@ -1,12 +1,14 @@
 tool
-extends AACustomResource
 class_name LSystem
+extends AACustomResource
+
 
 # the starting string
 export(String) var axiom
 # each rule must be an AARule
 export(Array, Resource) var rules
 export(int, 1, 20) var num_generations = 5
+
 
 func generate() -> String:
 	assert(len(axiom) > 0, "axiom required")

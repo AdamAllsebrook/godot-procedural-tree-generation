@@ -13,5 +13,5 @@ length_variance = 0.25
 thickness_factor = 0.7
 min_rotation = 18.0
 max_rotation = 22.0
-colour = Color( 0.647059, 0.443137, 0.443137, 1 )
+colour = Color( 0.368627, 0.180392, 0.180392, 1 )
 leaf_settings = ExtResource( 3 )

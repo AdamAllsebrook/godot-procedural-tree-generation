@@ -24,9 +24,11 @@ export(Color) var colour = Color(1, 1, 1, 1)
 
 var branches: Array
 
+
 func _ready() -> void:
 	randomize()
 	generate()
+
 
 func generate() -> void:
 	assert(l_system is LSystem, "l_system must be a resource of type LSystem")
@@ -52,6 +54,7 @@ func generate() -> void:
 				turtle.pop()
 				length /= length_factor
 
+				
 func _draw() -> void:
 	for branch in branches:
 		draw_line(branch.point1, branch.point2, colour, thickness)

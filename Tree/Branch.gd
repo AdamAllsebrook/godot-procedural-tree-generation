@@ -1,5 +1,6 @@
-extends Reference
 class_name Branch
+extends Reference
+
 
 var point_a: Vector3
 var point_b: Vector3
@@ -10,6 +11,7 @@ var colour: Color
 var children: Array = []
 var parent: Branch
 
+
 func _init(a: Vector3, b: Vector3, rot: Basis, thick: float, col: Color) -> void:
 	point_a = a
 	point_b = b
@@ -17,55 +19,63 @@ func _init(a: Vector3, b: Vector3, rot: Basis, thick: float, col: Color) -> void
 	thickness = thick
 	colour = col
 	
+	
 func add_child_branch(child: Branch) -> void:
 	children.append(child)
+	
 	
 func set_parent_branch(p: Branch) -> void:
 	parent = p
 	
+	
 func get_parent_branch() -> Branch:
 	return parent
-
-func add_to_mesh(mi: TreeMesh, bottom: Array, depth: int, leaf_settings: LeafSettings) -> void:
+	
+	
+# bottom: an array of vertices for the bottom side of the branch
+# depth: the number of branches away from the root this branch is
+func add_to_tree_mesh(tree_mesh: TreeMesh, bottom: Array, depth: int, leaf_settings: LeafSettings) -> void:
 	# create points for the top of the branch
 	var top: Array = create_top_points(bottom.size(), point_a, rot_basis, 
-			point_a.distance_to(point_b), thickness)
+			thickness, point_a.distance_to(point_b))
 	
 	# create branch
-	var attrs: MeshAttributes = create_prism(bottom.size(), bottom, top, point_a, 
-			rot_basis, point_a.distance_to(point_b), thickness)
-	mi.add_branch(attrs)
+	var attrs: MeshAttributes = create_mesh(bottom.size(), bottom, top, point_a, 
+			rot_basis, point_a.distance_to(point_b))
+	tree_mesh.add_branch(attrs)
 
 	# create leaves along branch
 	if depth >= leaf_settings.min_depth:
 		var leaf_attrs: MeshAttributes = create_leaves_across_branch(point_a, rot_basis, 
-				point_a.distance_to(point_b), thickness, leaf_settings)
-		mi.add_leaf(leaf_attrs)
+				thickness, point_a.distance_to(point_b), leaf_settings)
+		tree_mesh.add_leaf(leaf_attrs)
 
 	# add leaf to end
 	if children.size() == 0:
 		var leaf_attrs: MeshAttributes = create_leaf(point_b, rot_basis, leaf_settings)
-		mi.add_leaf(leaf_attrs)
+		tree_mesh.add_leaf(leaf_attrs)
 	
-	# create child branches
+	# repeat for children
 	for child in children:
-		child.add_to_mesh(mi, attrs.data.top, depth + 1, leaf_settings)
-		
+		child.add_to_tree_mesh(tree_mesh, top, depth + 1, leaf_settings)
+	
+	
+# create points for the top side of the branch
 func create_top_points(num_points: int, translation: Vector3, rotation: Basis,
-		height: float, width: float) -> Array:
-			
+		width: float, height: float) -> Array:
+	
 	var top := []
-	# create points for top side
 	for i in (num_points):
-		var v: Vector3 = get_prism_point(float(i) / num_points, height, width)
+		var v: Vector3 = get_prism_point(float(i) / num_points, width, height)
 		v = rotation * v
 		v += translation
 		top.append(v)
 	
 	return top
-
-static func create_prism(num_sides: int, bottom: Array, top: Array, translation: Vector3, 
-		rotation: Basis, height: float, width: float) -> MeshAttributes:
+	
+	
+static func create_mesh(num_sides: int, bottom: Array, top: Array, translation: Vector3, 
+		rotation: Basis, height: float) -> MeshAttributes:
 	
 	var attrs := MeshAttributes.new()
 	
@@ -75,12 +85,14 @@ static func create_prism(num_sides: int, bottom: Array, top: Array, translation:
 	# align bottom and top arrays
 	# by rotating bottom array to the layout that has the least distance to the top array
 	var distance_sums := []
+	# get the distance for each layout
 	for i in (num_sides):
 		var sum: float = 0
 		for j in num_sides:
 			sum += bottom[j].distance_to(top[j])
 		distance_sums.append(sum)
 		bottom.push_back(bottom.pop_front())
+	# rotate to the closest layout
 	for i in (distance_sums.find(distance_sums.min())):
 		bottom.push_back(bottom.pop_front())
 	
@@ -95,45 +107,31 @@ static func create_prism(num_sides: int, bottom: Array, top: Array, translation:
 			i + num_sides,
 			(i + 1) % num_sides + num_sides,
 		]))
-			
-#		attrs.append_verts(PoolVector3Array([
-#			bottom[i],
-#			bottom[(i+1) % num_sides],
-#			top[i],
-#
-#			top[i],
-#			bottom[(i+1) % num_sides],
-#			top[(i+1) % num_sides],
-#		]))
-#
-#		attrs.append_normals(PoolVector3Array([
-#			(centre_bottom - bottom[i]).normalized(),
-#			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
-#			(centre_top - top[i]).normalized(),
-#
-#			(centre_top - top[i]).normalized(),
-#			(centre_bottom - bottom[(i+1) % num_sides]).normalized(),
-#			(centre_top - top[(i+1) % num_sides]).normalized(),
-#		]))
 	
 	for i in (num_sides * 2):
 		attrs.append_uv(Vector2())
 	
 	attrs.append_verts(PoolVector3Array(top))
 	attrs.append_verts(PoolVector3Array(bottom))
+	
 	for vertex in top:
 		attrs.append_normal((centre_top - vertex).normalized())
 	for vertex in bottom:
 		attrs.append_normal((centre_bottom - vertex).normalized())
 	
-	attrs.data.top = top
 	return attrs
 	
-static func get_prism_point(angle_percent: float, height: float, width: float) -> Vector3:
+	
+# returns the point on the branch prism, given how far around the prism the point is,
+# the width of the prism,
+# how high up the prism the point is 
+static func get_prism_point(angle_percent: float, width: float, height: float) -> Vector3:
 	return Vector3(sin(2 * PI * angle_percent) * width, height, cos(2 * PI * angle_percent) * width)
-
+	
+	
+# create leaves parallel to and on either side of the branch at a regular frequency
 static func create_leaves_across_branch(translation: Vector3, rotation: Basis, 
-		branch_height: float, branch_width: float, settings: LeafSettings) -> MeshAttributes:
+		branch_width: float, branch_height: float, settings: LeafSettings) -> MeshAttributes:
 	var attrs := MeshAttributes.new()
 	
 	for i in range(0, branch_height, 1 / settings.frequency):
@@ -143,7 +141,11 @@ static func create_leaves_across_branch(translation: Vector3, rotation: Basis,
 			attrs.append_mesh_attributes(leaf_attrs)
 	
 	return attrs
-
+	
+	
+# create a single leaf given the point where it attaches to the branch, 
+# the rotation and the leaf settings for this tree.
+# the leaf is a flat rectangle
 static func create_leaf(translation: Vector3, rotation: Basis, settings: LeafSettings) -> MeshAttributes:
 	var attrs := MeshAttributes.new()
 	

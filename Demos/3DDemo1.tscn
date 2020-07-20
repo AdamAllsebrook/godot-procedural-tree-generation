@@ -10,12 +10,16 @@ transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 [node name="Tree" parent="." instance=ExtResource( 1 )]
 l_system = ExtResource( 2 )
 start_length = 10
+length_factor = 0.9
 length_variance = 0.25
+start_thickness = 1
 thickness_factor = 0.7
 min_rotation = 13.0
 max_rotation = 17.0
 colour = Color( 0.647059, 0.443137, 0.443137, 1 )
+branch_num_sides = 5
 leaf_settings = ExtResource( 3 )
+gen = false
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 48.9054, 94.2462 )
