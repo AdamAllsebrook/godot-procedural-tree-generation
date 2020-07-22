@@ -24,7 +24,7 @@ export(Resource) var l_system
 export(int) var start_length = 20
 export(float) var length_factor = .9
 export(float) var length_variance = .1
-export(int, 1, 100) var start_thickness = 1
+export(float, 0, 100) var start_thickness = 1
 export(float) var thickness_factor = 1
 
 export(float, 0, 360) var min_rotation = 15

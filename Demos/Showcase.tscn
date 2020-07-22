@@ -1,0 +1,131 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Tree/Tree.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Demos/3D/Resources/Tree1/leaf_tree1_1.tres" type="Resource" id=2]
+[ext_resource path="res://Demos/3D/Resources/Tree1/lsys_tree1.tres" type="Resource" id=3]
+[ext_resource path="res://Demos/Showcase.gd" type="Script" id=4]
+[ext_resource path="res://Demos/3D/Resources/Tree2/lsys_tree2.tres" type="Resource" id=5]
+[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2_1.tres" type="Resource" id=6]
+[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2_2.tres" type="Resource" id=7]
+[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2_3.tres" type="Resource" id=8]
+[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2_4.tres" type="Resource" id=9]
+[ext_resource path="res://Demos/3D/Resources/Tree1/leaf_tree1_4.tres" type="Resource" id=10]
+[ext_resource path="res://Demos/3D/Resources/Tree1/leaf_tree1_2.tres" type="Resource" id=11]
+[ext_resource path="res://Demos/3D/Resources/Tree1/leaf_tree1_3.tres" type="Resource" id=12]
+
+[node name="Showcase" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="Trees" type="Spatial" parent="."]
+
+[node name="Tree1" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 3 )
+start_length = 10
+length_variance = 0.3
+thickness_factor = 0.7
+min_rotation = 12.0
+max_rotation = 18.0
+colour = Color( 0.647059, 0.443137, 0.443137, 1 )
+leaf_settings = ExtResource( 2 )
+
+[node name="Tree2" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 3 )
+start_length = 10
+length_variance = 0.3
+thickness_factor = 0.7
+min_rotation = 12.0
+max_rotation = 18.0
+colour = Color( 0.403922, 0.227451, 0.227451, 1 )
+leaf_settings = ExtResource( 10 )
+random_seed = 3
+
+[node name="Tree3" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 3 )
+start_length = 10
+length_variance = 0.3
+thickness_factor = 0.7
+min_rotation = 12.0
+max_rotation = 18.0
+colour = Color( 0.407843, 0.286275, 0.286275, 1 )
+leaf_settings = ExtResource( 12 )
+random_seed = 2
+
+[node name="Tree4" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 3 )
+start_length = 10
+length_variance = 0.3
+thickness_factor = 0.7
+min_rotation = 12.0
+max_rotation = 18.0
+colour = Color( 0.647059, 0.443137, 0.443137, 1 )
+leaf_settings = ExtResource( 11 )
+random_seed = 1
+
+[node name="Tree5" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 5 )
+start_length = 5
+length_variance = 0.25
+thickness_factor = 0.7
+min_rotation = 15.0
+max_rotation = 25.0
+colour = Color( 0.368627, 0.180392, 0.180392, 1 )
+leaf_settings = ExtResource( 6 )
+
+[node name="Tree6" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 5 )
+start_length = 5
+length_variance = 0.25
+thickness_factor = 0.7
+min_rotation = 15.0
+max_rotation = 25.0
+colour = Color( 0.368627, 0.180392, 0.180392, 1 )
+leaf_settings = ExtResource( 7 )
+random_seed = 1
+
+[node name="Tree7" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 5 )
+start_length = 5
+length_variance = 0.25
+thickness_factor = 0.7
+min_rotation = 15.0
+max_rotation = 25.0
+colour = Color( 0.368627, 0.180392, 0.180392, 1 )
+leaf_settings = ExtResource( 8 )
+random_seed = 2
+
+[node name="Tree8" parent="Trees" instance=ExtResource( 1 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
+visible = false
+l_system = ExtResource( 5 )
+start_length = 5
+length_variance = 0.25
+thickness_factor = 0.7
+min_rotation = 15.0
+max_rotation = 25.0
+colour = Color( 0.596078, 0.427451, 0.427451, 1 )
+leaf_settings = ExtResource( 9 )
+random_seed = 3
+
+[node name="CameraOrbit" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0 )
+
+[node name="Camera" type="Camera" parent="CameraOrbit"]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 25 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="on_timer_timeout"]

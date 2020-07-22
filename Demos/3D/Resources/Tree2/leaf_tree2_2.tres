@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Tree/LeafSettings.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+frequency = 0.3
+width = 1.5
+height = 1.5
+min_depth = 11
+colour = Color( 0.94902, 0.501961, 0.466667, 1 )

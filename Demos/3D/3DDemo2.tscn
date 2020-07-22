@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Tree/Tree.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Demos/3D/Resources/Tree2/lsys_tree2.tres" type="Resource" id=2]
-[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2.tres" type="Resource" id=3]
+[ext_resource path="res://Demos/3D/Resources/Tree2/leaf_tree2_1.tres" type="Resource" id=3]
+
 
 [node name="3DDemo2" type="Spatial"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
@@ -10,14 +11,9 @@ transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 [node name="Tree" parent="." instance=ExtResource( 1 )]
 l_system = ExtResource( 2 )
 start_length = 5
-length_factor = 0.9
 length_variance = 0.25
-start_thickness = 1
 thickness_factor = 0.7
 min_rotation = 18.0
 max_rotation = 22.0
 colour = Color( 0.368627, 0.180392, 0.180392, 1 )
-branch_num_sides = 5
 leaf_settings = ExtResource( 3 )
-random_seed = 0
-gen = false

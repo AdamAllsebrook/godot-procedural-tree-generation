@@ -93,7 +93,11 @@ _global_script_class_icons={
 [application]
 
 config/name="Procedural Generation of Trees using L-Systems"
-run/main_scene="res://Demos/3D/3DDemo1.tscn"
+run/main_scene="res://Demos/Showcase.tscn"
+
+[display]
+
+window/size/fullscreen=true
 
 [rendering]
 
